@@ -1,0 +1,35 @@
+name: 🛡️ Trivy Security Scan
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      
+    # 1. Docker Image Scan (Base Image)
+    - name: Run Trivy vulnerability scan on Docker Image
+      uses: aquasecurity/trivy-action@master
+      with:
+        # Scans the intentionally vulnerable Node:14 image
+        image-ref: 'node:14' 
+        format: 'table'
+        exit-code: '1' # Fails the build if CRITICAL/HIGH are found
+        severity: 'CRITICAL,HIGH'
+        
+    # 2. Filesystem Dependencies Scan (SAST)
+    - name: Run Trivy vulnerability scan on Filesystem
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        input: '.' 
+        format: 'table'
+        exit-code: '0' # Allows success even with vulnerabilities for demo purposes
+        severity: 'CRITICAL,HIGH'

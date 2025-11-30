@@ -1,0 +1,13 @@
+{
+  "name": "secdevops-app",
+  "version": "1.0.0",
+  "description": "Simple node app for Trivy scan demo",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.16.4" 
+    /* Version 4.16.4 is old and will trigger high/critical vulnerabilities */
+  }
+}
